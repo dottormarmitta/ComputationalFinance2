@@ -10,7 +10,8 @@ public class AssetOrNothing extends net.finmath.montecarlo.assetderivativevaluat
 	// Parameters
 	final double maturity;
 	final double strike;
-			
+	// We may have underlyingIndex (when I have multiple processes and I want to find the payoff for a precise one!
+	// We may have nameOfUnderlying		
 			
 	// Constructor
 	public AssetOrNothing(double maturity, double strike) {
@@ -27,7 +28,14 @@ public class AssetOrNothing extends net.finmath.montecarlo.assetderivativevaluat
 		RandomVariable underlyingAtMaturity = model.getAssetValue(maturity, 0);
 		
 		// I have to build the payoff function bearing in mind the indicator {S(T) > K}
-				RandomVariable values = underlyingAtMaturity.sub(strike).choose(underlyingAtMaturity, new Scalar(0.0));
+		RandomVariable values = underlyingAtMaturity.sub(strike).choose(underlyingAtMaturity, new Scalar(0.0));
+		/*
+		 * This could also be done as:
+		 * 
+		 * final DoubleUnaryOperator payoffFunction = (x) -> (x-strike>0 ? x : 0);
+		 * RandomVariable values = underlyingAtMaturity.apply(payoffFunction);
+		 * 
+		 */
 				
 		// I discount the payoffs to time zero:
 		RandomVariable numeraireAtMaturity	= model.getNumeraire(maturity);
