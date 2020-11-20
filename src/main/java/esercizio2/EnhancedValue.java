@@ -51,9 +51,9 @@ public interface EnhancedValue {
 	EnhancedValue exp();
 
 	/**
-	 * Applies ??
+	 * Applies a + x*y to the object a
 	 *
-	 * @return ??
+	 * @return new object representing the result
 	 */
 	EnhancedValue addProduct(EnhancedValue x, EnhancedValue y);
 
