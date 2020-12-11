@@ -1,8 +1,5 @@
 package esercizio2;
 
-
-
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +13,17 @@ public class EnhancedValueDoubleDifferentiable implements EnhancedValueDifferent
 		SQUARED, SQRT, ADD, SUB, MULT, DIV, EXP, ADDPROD
 	}
 
-	private static AtomicLong nextId = new AtomicLong();
+	/*
+	 * I want to build a tree whose node are object of class ENANCHED VALUE. We then scroll backward.
+	 * In order to scroll our tree we clearly have to have an ID associated with each node!!
+	 */
+
+	private static AtomicLong nextId = new AtomicLong(); // Shared among every object
+	// We increment by one as one new object is created!
 
 	private Double value;
 	private Operator operator;
-	private List<EnhancedValueDoubleDifferentiable> arguments;
+	private List<EnhancedValueDoubleDifferentiable> arguments; // Nodes on which they depends
 	private Long id;
 
 	/**
@@ -30,12 +33,17 @@ public class EnhancedValueDoubleDifferentiable implements EnhancedValueDifferent
 	 * @param operator Operator that lead to this value.
 	 * @param arguments Arguments that were used in this operation.
 	 */
+	// This construct is private because we want to keep the construction safe from user.
 	private EnhancedValueDoubleDifferentiable(Double value, Operator operator, List<EnhancedValueDoubleDifferentiable> arguments) {
 		super();
 		this.value = value;
 		this.operator = operator;
-		this.arguments = arguments;
-		this.id = nextId.getAndIncrement();
+		this.arguments = arguments; // List of object of type Enh....Diff!
+		this.id = nextId.getAndIncrement(); // first I get the ID and then I increment it, in this way the next object
+		// will have nextID + 1
+		/*
+		 * Here is the most important part:
+		 */
 	}
 
 	/**
@@ -49,6 +57,9 @@ public class EnhancedValueDoubleDifferentiable implements EnhancedValueDifferent
 
 	/*
 	 * The operations, implementing the interface.
+	 *
+	 * When I perform one of the following, I want to create a new node (hence I call the constructor)
+	 * with a value equal to the operation performed plus the other arguments
 	 */
 
 	@Override
@@ -108,7 +119,7 @@ public class EnhancedValueDoubleDifferentiable implements EnhancedValueDifferent
 	 */
 	public Map<EnhancedValueDifferentiable, Double> getDerivativeWithRespectTo() {
 		// The map that will contain the derivatives x -> dy/dx				// The map contains in iteration m the values d F
-		Map<EnhancedValueDifferentiable, Double> derivativesWithRespectTo = new HashMap<>();
+		Map<EnhancedValueDifferentiable, Double> derivativesWithRespectTo = new HashMap();
 		// Init with dy / dy = 1
 		derivativesWithRespectTo.put(this, 1.0);
 

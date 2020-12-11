@@ -51,10 +51,14 @@ public interface EnhancedValue {
 	EnhancedValue exp();
 
 	/**
-	 * Applies ??
+	 * Applies
 	 *
 	 * @return ??
 	 */
 	EnhancedValue addProduct(EnhancedValue x, EnhancedValue y);
+
+
+
+
 
 }
